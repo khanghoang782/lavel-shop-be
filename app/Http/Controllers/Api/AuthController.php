@@ -32,11 +32,26 @@ class AuthController extends Controller
                 return ResponseHelper::error(message: "Invalid Credentials",statusCode: 401);
             }
             $user = auth()->user();
+            $token = JWTAuth::claims(['role'=>$user->role])->fromUser($user);
 
             return ResponseHelper::success(message: "Login successfully",data:['token'=>$token]);
 
         }catch (JWTException $e){
             return ResponseHelper::error(message: "Failed to create token",statusCode: 500);
         }
+    }
+    public function getUser(){
+        try {
+            if (! $user = JWTAuth::parseToken()->authenticate()) {
+                return ResponseHelper::error(message: "User not found", statusCode: 404);
+            }
+        } catch (JWTException $e) {
+            return ResponseHelper::error(message: "Invalid token", statusCode: 400);
+        }
+
+        return ResponseHelper::success(message: "Found user", data:$user);
+    }
+    public function logout(){
+        return ResponseHelper::success(message: "Logout successfully");
     }
 }
