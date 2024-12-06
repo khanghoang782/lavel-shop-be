@@ -15,7 +15,7 @@ Route::controller(AuthController::class)->group(function () {
 //Authenticated route
 Route::middleware([JwtMiddleware::class])->group(function () {
     Route::controller(AuthController::class)->group(function () {
-        Route::get('/user', 'getUser');
+        Route::get('/user/me', 'getUser');
         Route::post('/logout', 'logout');
     });
 });
@@ -27,10 +27,11 @@ Route::middleware([IsAdminMiddleware::class])->group(function () {
 
         //Product Route
         Route::post('/product', 'addProduct');
-        Route::delete('/product', 'deleteProduct');
+        Route::delete('/product/{product_id}', 'deleteProductById');
         Route::put('/product', 'updateProduct');
         //Catalog Route
 
+        Route::get("/admin/isadmin", "isAdmin");
     });
 });
 //Public route
@@ -40,8 +41,8 @@ Route::controller(ProductController::class)->group(function () {
     Route::get('/products/catalog/{catalog_name}','getByCatalogName');
     Route::get('/products/{product_id}','getOneProductById');
 
-    //Catalog route
-    Route::get('/products/catalogs', 'getAllCatalogs');
 
+    //Catalog route
+    Route::get('/catalogs', 'getAllCatalogs');
 });
 

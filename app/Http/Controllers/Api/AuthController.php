@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
+use http\Env\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -18,10 +19,10 @@ class AuthController extends Controller
     public function register(RegisterRequest $request)
     {
         $user = (new User)->create([
-            'name'=>$request->name,
-            'email'=>$request->email,
-            'password'=>Hash::make($request->password),
-            'phone_number'=>$request->phone_number,
+            'name'=>$request->input('name'),
+            'email'=>$request->input('email'),
+            'password'=>Hash::make($request->input('password')),
+            'phone_number'=>$request->input('phone_number'),
         ]);
         return ResponseHelper::success(message: "Register successfully");
     }
@@ -34,12 +35,13 @@ class AuthController extends Controller
             $user = auth()->user();
             $token = JWTAuth::claims(['role'=>$user->role])->fromUser($user);
 
-            return ResponseHelper::success(message: "Login successfully",data:['token'=>$token]);
+            return response()->json(['token'=>$token,'role'=>$user->role,'name'=>$user->name],200);
 
         }catch (JWTException $e){
             return ResponseHelper::error(message: "Failed to create token",statusCode: 500);
         }
     }
+
     public function getUser(){
         try {
             if (! $user = JWTAuth::parseToken()->authenticate()) {
@@ -49,7 +51,7 @@ class AuthController extends Controller
             return ResponseHelper::error(message: "Invalid token", statusCode: 400);
         }
 
-        return ResponseHelper::success(message: "Found user", data:$user);
+        return response()->json(['id'=>$user->id,'name'=>$user->name,'email'=>$user->email,'role'=>$user->role]);
     }
     public function logout(){
         return ResponseHelper::success(message: "Logout successfully");

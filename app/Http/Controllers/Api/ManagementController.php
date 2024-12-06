@@ -32,4 +32,16 @@ class ManagementController extends Controller
         ]);
         return ResponseHelper::success(message: "Product created", data:$product);
     }
+    public function deleteProductById(Request $request){
+        try{
+            $id=$request->route()->parameter('product_id');
+            Product::destroy($id);
+            return ResponseHelper::success(message: "Product deleted");
+        }catch (\Exception $e){
+            return ResponseHelper::error(message: "something went wrong",data:$e,statusCode: 500);
+        }
+    }
+    public function isAdmin(){
+        return response()->json(["OK"],200);
+    }
 }
