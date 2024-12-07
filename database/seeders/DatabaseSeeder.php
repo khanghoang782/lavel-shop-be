@@ -19,7 +19,10 @@ class DatabaseSeeder extends Seeder
         User::create(['name' => 'admin', 'email' => 'admin@admin.com', 'password' => Hash::make('12345678'),'phone_number' => '0987654321','role' => 'ADMIN']);
         User::factory()->count(20)->create();
 
-        Catalog::factory()->count(6)->create();
+        Catalog::create(['catalog_name'=>'ÁO']);
+        Catalog::create(['catalog_name'=>'Quần']);
+        Catalog::create(['catalog_name'=>'Mũ']);
+
         Product::factory()->count(20)->create();
     }
 }
