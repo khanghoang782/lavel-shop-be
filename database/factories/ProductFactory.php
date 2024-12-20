@@ -22,7 +22,7 @@ class ProductFactory extends Factory
             'price' => fake()->numberBetween(1000, 10000),
             'stock' => fake()->numberBetween(1, 10),
             'created_at' => fake()->dateTime('now'),
-            'catalog_id' => fake()->numberBetween(1, 3),
+            'catalog_id' => fake()->numberBetween(1, 4),
         ];
     }
 }

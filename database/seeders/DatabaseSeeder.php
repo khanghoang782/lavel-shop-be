@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         Catalog::create(['catalog_name'=>'ÁO']);
         Catalog::create(['catalog_name'=>'Quần']);
         Catalog::create(['catalog_name'=>'Mũ']);
-
-        Product::factory()->count(20)->create();
+        Catalog::create(['catalog_name'=>"Phụ Kiện"]);
+        Product::factory()->count(40)->create();
     }
 }

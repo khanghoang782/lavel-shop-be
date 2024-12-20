@@ -38,8 +38,12 @@ Route::middleware([IsAdminMiddleware::class])->group(function () {
 Route::controller(ProductController::class)->group(function () {
     //Product route
     Route::get('/products', 'getAll');
-    Route::get('/products/catalog/{catalog_name}','getByCatalogName');
+    Route::get('/products/catalog/{catalog_id}','getByCatalogId');
     Route::get('/products/{product_id}','getOneProductById');
+
+    Route::get('/productdisplay','getRandomProduct');
+
+
 
 
     //Catalog route
