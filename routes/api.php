@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ManagementController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\JwtMiddleware;
@@ -44,9 +45,10 @@ Route::controller(ProductController::class)->group(function () {
     Route::get('/productdisplay','getRandomProduct');
 
 
-
-
     //Catalog route
     Route::get('/catalogs', 'getAllCatalogs');
+});
+Route::controller(OrderController::class)->group(function () {
+   Route::post('/order', 'makeOrder');
 });
 

@@ -18,8 +18,8 @@ class ProductFactory extends Factory
     {
         return [
             'product_name' => fake()->name(),
-            'description' => fake()->text(80),
-            'price' => fake()->numberBetween(1000, 10000),
+            'description' => fake()->text(250),
+            'price' => fake()->numberBetween(90000, 990000),
             'stock' => fake()->numberBetween(1, 10),
             'created_at' => fake()->dateTime('now'),
             'catalog_id' => fake()->numberBetween(1, 4),
