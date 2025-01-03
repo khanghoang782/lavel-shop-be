@@ -33,7 +33,7 @@ class AuthController extends Controller
                 return ResponseHelper::error(message: "Invalid Credentials",statusCode: 401);
             }
             $user = auth()->user();
-            $token = JWTAuth::claims(['role'=>$user->role])->fromUser($user);
+            $token = JWTAuth::claims(['role'=>$user->role,'username'=>$user->name])->fromUser($user);
 
             return response()->json(['token'=>$token,'role'=>$user->role,'name'=>$user->name],200);
 
