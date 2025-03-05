@@ -30,6 +30,8 @@ Route::middleware([IsAdminMiddleware::class])->group(function () {
         Route::post('/product', 'addProduct');
         Route::delete('/product/{product_id}', 'deleteProductById');
         Route::put('/product', 'updateProduct');
+
+        Route::post('/upload','addProductImage');
         //Catalog Route
 
         Route::get("/admin/isadmin", "isAdmin");
@@ -47,6 +49,8 @@ Route::controller(ProductController::class)->group(function () {
 
     //Catalog route
     Route::get('/catalogs', 'getAllCatalogs');
+    //Image
+    Route::get('/product/{id}/image','getProductImageUrl');
 });
 Route::controller(OrderController::class)->group(function () {
    Route::post('/order', 'makeOrder');

@@ -6,8 +6,10 @@ use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
+use App\Models\ProductImage;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 
 class ManagementController extends Controller
@@ -43,5 +45,24 @@ class ManagementController extends Controller
     }
     public function isAdmin(){
         return response()->json(["OK"],200);
+    }
+    public function addProductImage(Request $request){
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'product_id'=>'required'
+        ]);
+        $filename=time().'_'.$request->input('product_id').'.'.$request->file('image')->extension();
+        $path=$request->file('image')->storeAs('images',$filename, 'public');
+
+        if($path!=false){
+            $url=Storage::url($filename);
+            $image=ProductImage::create([
+                'product_id'=>$request->input('product_id'),
+                'image_path'=>$path,
+                'image_url'=>"/storage/images/".$filename,
+                'image_name'=>$filename,
+            ]);
+            return response()->json(["data"=>$image],200);
+        }
     }
 }
