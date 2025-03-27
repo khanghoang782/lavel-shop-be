@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -64,5 +66,56 @@ class ManagementController extends Controller
             ]);
             return response()->json(["data"=>$image],200);
         }
+    }
+    public function getOrderList(Request $request){
+        $sort=$request->query('sort');
+        if($sort=='get-all'){
+            $result = DB::table('orders')
+                ->select('id','email','name','phone','status')
+                ->simplePaginate(8);
+
+            return response()->json(["data"=>$result],200);
+        }
+        if($sort=='get-pending'){
+            $result = DB::table('orders')
+                ->select('id','email','name','phone','status')
+                ->where('status','PENDING')
+                ->simplePaginate(8);
+
+            return response()->json(["data"=>$result],200);
+        }
+        if($sort=='get-confirm'){
+            $result = DB::table('orders')
+                ->select('id','email','name','phone','status')
+                ->where('status','CONFIRM')
+                ->simplePaginate(8);
+
+            return response()->json(["data"=>$result],200);
+        }
+
+        return response("",404);
+    }
+    public function updateOrderStatus(Request $request){
+        $id=$request->route()->parameter('order_id');
+        $action=$request->query('action');
+        if($action=='accept'){
+            DB::table('orders')
+                ->where('id',$id)
+                ->update(['status'=>'CONFIRM','updated_at'=>now()]);
+            return response('OK',200);
+        }
+        if($action=='cancel'){
+            DB::table('orders')
+                ->where('id',$id)
+                ->update(['status'=>'CANCELLED','updated_at'=>now()]);
+            return response('OK',200);
+        }
+        if($action=='end'){
+            DB::table('orders')
+                ->where('id',$id)
+                ->update(['status'=>'DONE','updated_at'=>now()]);
+            return response('OK',200);
+        }
+        return response('',404);
     }
 }

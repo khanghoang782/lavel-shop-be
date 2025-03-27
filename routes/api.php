@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\GoogleAuthController;
 use App\Http\Controllers\Api\ManagementController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
@@ -35,6 +36,10 @@ Route::middleware([IsAdminMiddleware::class])->group(function () {
         //Catalog Route
 
         Route::get("/admin/isadmin", "isAdmin");
+
+        //TEST
+        Route::get("/admin/order", "getOrderList");
+        Route::put("/admin/order/{order_id}", "updateOrderStatus");
     });
 });
 //Public route
@@ -54,5 +59,10 @@ Route::controller(ProductController::class)->group(function () {
 });
 Route::controller(OrderController::class)->group(function () {
    Route::post('/order', 'makeOrder');
+});
+Route::controller(GoogleAuthController::class)->group(function () {
+    Route::get('/auth/google/url','getGoogleUrl');
+    Route::get('/auth/google/callback','callback');
+
 });
 

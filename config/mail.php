@@ -94,8 +94,8 @@ return [
                 'postmark',
             ],
         ],
-        'mailgun' => [
-            'transport' => 'mailgun'
+        'mailtrap' => [
+            'transport' => 'mailtrap'
         ],
 
     ],

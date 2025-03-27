@@ -7,8 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
-use http\Env\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -34,7 +32,6 @@ class AuthController extends Controller
             }
             $user = auth()->user();
             $token = JWTAuth::claims(['role'=>$user->role,'username'=>$user->name])->fromUser($user);
-
             return response()->json(['token'=>$token,'role'=>$user->role,'name'=>$user->name],200);
 
         }catch (JWTException $e){
