@@ -35,13 +35,13 @@ class OrderController extends Controller
             ->join('products','order_details.product_id','=','products.id')
             ->where('order_details.order_id','=',$order_id)
             ->select('order_details.order_id','products.product_name','order_details.quantity','products.price');
-        $cartArray=array($cartItem);
-        try{
+        //$cartArray=array($cartItem);
+       /* try{
             //Testing email
             Mail::to('pnhkhang92vp2@gmail.com')->send(new OrdersConfirmMail($cartArray));
         }catch (MailtrapExceptionInterface $exception){
             return response()->json(['message'=>$exception->getMessage()],500);
-        }
+        }*/
         return response()->json(['data'=>$oder],200);
     }
     public function testCardMail(){
@@ -57,5 +57,19 @@ class OrderController extends Controller
             return response()->json(['message'=>$exception->getMessage()],500);
         }
         return response()->json($cartItem,200);
+    }
+    public function getOrderDetails(Request $request){
+        $orderId=$request->route()->parameter('id');
+        $order=Order::where('id',$orderId)->first();
+        if($order){
+            $cartItem=DB::table('order_details')
+                ->select('order_details.order_id','products.id','products.product_name','order_details.quantity','products.price')
+                ->join('products','products.id','=','order_details.product_id')
+                ->where('order_details.order_id','=',$orderId)
+                ->get();
+            return response()->json(['order'=>$order,'cart'=>$cartItem],200);
+        }
+        return response()->json(['message'=>'Order not found'],404);
+
     }
 }

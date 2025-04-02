@@ -17,6 +17,15 @@ class ProductController extends Controller
             ->select('products.id', 'product_name','description','price','stock','catalogs.catalog_name')
             ->paginate(9);
 
+        foreach($data as $item){
+            $attributeResult=DB::table('attributes')
+                ->join('has_attributes', 'has_attributes.attribute_id', '=', 'attributes.id')
+                ->select('attributes.attribute_name','attributes.id','attributes.group_id')
+                ->where('has_attributes.product_id', '=', $item->id)
+                ->get();
+            $item->attribute=$attributeResult;
+        }
+
         return response()->json([$data],200);
     }
     public function getAllCatalogs(){
@@ -33,6 +42,14 @@ class ProductController extends Controller
             ->select('products.id', 'product_name','description','price','stock','catalogs.catalog_name','product_images.image_url')
             ->where('catalogs.id', '=', $catalog_id)
             ->paginate(8);
+        foreach($data as $item){
+            $attributeResult=DB::table('attributes')
+                ->join('has_attributes', 'has_attributes.attribute_id', '=', 'attributes.id')
+                ->select('attributes.attribute_name','attributes.id','attributes.group_id')
+                ->where('has_attributes.product_id', '=', $item->id)
+                ->get();
+            $item->attribute=$attributeResult;
+        }
         return response()->json([$data],200);
     }
     public function getOneProductById(Request $request){
@@ -42,6 +59,12 @@ class ProductController extends Controller
             ->select('products.id', 'product_name','description','price','stock','catalogs.catalog_name')
             ->where('products.id', '=', $id)
             ->firstOrFail();
+        $attributeResult=DB::table('attributes')
+            ->join('has_attributes', 'has_attributes.attribute_id', '=', 'attributes.id')
+            ->select('attributes.attribute_name','attributes.id','attributes.group_id')
+            ->where('has_attributes.product_id', '=', $data->id)
+            ->get();
+        $data->attribute=$attributeResult;
         return response()->json(['data'=>$data],200);
     }
     public function getRandomProduct(Request $request){
@@ -80,7 +103,15 @@ class ProductController extends Controller
         }
         return response()->json($data,200);
     }
+    public function getSizeAttribute(){
+        $data=DB::table("attributes")
+            ->join('attribute_groups','attribute_groups.id','=','attributes.group_id')
+            ->where('attribute_groups.group_name','=','Size')
+            ->select('attributes.attribute_name')
+            ->get();
 
+        return response()->json($data,200);
+    }
 
 
 }

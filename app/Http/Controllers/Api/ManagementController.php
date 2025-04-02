@@ -71,26 +71,29 @@ class ManagementController extends Controller
         $sort=$request->query('sort');
         if($sort=='get-all'){
             $result = DB::table('orders')
-                ->select('id','email','name','phone','status')
-                ->simplePaginate(8);
+                ->select('id','email','name','phone','status','created_at')
+                ->orderBy('created_at','desc')
+                ->paginate(8);
 
-            return response()->json(["data"=>$result],200);
+            return response()->json($result,200);
         }
         if($sort=='get-pending'){
             $result = DB::table('orders')
-                ->select('id','email','name','phone','status')
+                ->select('id','email','name','phone','status','created_at')
                 ->where('status','PENDING')
-                ->simplePaginate(8);
+                ->orderBy('created_at','desc')
+                ->paginate(8);
 
-            return response()->json(["data"=>$result],200);
+            return response()->json($result,200);
         }
         if($sort=='get-confirm'){
             $result = DB::table('orders')
-                ->select('id','email','name','phone','status')
+                ->select('id','email','name','phone','status','created_at')
                 ->where('status','CONFIRM')
-                ->simplePaginate(8);
+                ->orderBy('created_at','desc')
+                ->paginate(8);
 
-            return response()->json(["data"=>$result],200);
+            return response()->json($result,200);
         }
 
         return response("",404);

@@ -56,9 +56,14 @@ Route::controller(ProductController::class)->group(function () {
     Route::get('/catalogs', 'getAllCatalogs');
     //Image
     Route::get('/product/{id}/image','getProductImageUrl');
+
+    //Attribute
+    Route::get('/attribute/size','getSizeAttribute');
 });
 Route::controller(OrderController::class)->group(function () {
    Route::post('/order', 'makeOrder');
+
+   Route::get('/order/{id}', 'getOrderDetails');
 });
 Route::controller(GoogleAuthController::class)->group(function () {
     Route::get('/auth/google/url','getGoogleUrl');

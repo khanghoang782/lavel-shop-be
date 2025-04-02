@@ -5,13 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Order extends Model
+class HasAttribute extends Model
 {
+    //
     use HasFactory;
-    protected $fillable = [
-        'name',
-        'email',
-        'phone',
-        'address',
-    ];
+
+    protected $fillable = ['product_id','attribute_id'];
 }
