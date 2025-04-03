@@ -7,7 +7,7 @@ services:
             context: ./
             dockerfile: Dockerfile
         image: lavel-shop-be
-        container_name: lavel-shop-be-app
+        container_name: lavel-shop-be-api
         restart: unless-stopped
         working_dir: /var/www/
         volumes:
@@ -30,6 +30,7 @@ services:
             - ./docker-compose/mysql:/docker-entrypoint-initdb.d
         networks:
             - lavelshop
+
 
     nginx:
         image: nginx:stable-alpine
