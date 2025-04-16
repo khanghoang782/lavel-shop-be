@@ -21,13 +21,13 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::create(['name' => 'admin', 'email' => 'admin@admin.com', 'password' => Hash::make('12345678'),'phone_number' => '0987654321','role' => 'ADMIN']);
-        User::factory()->count(20)->create();
+        //User::factory()->count(20)->create();
 
         Catalog::create(['catalog_name'=>'Áo']);
         Catalog::create(['catalog_name'=>'Quần']);
         Catalog::create(['catalog_name'=>'Mũ']);
         Catalog::create(['catalog_name'=>"Phụ Kiện"]);
-        Product::factory()->count(80)->create();
+        //Product::factory()->count(80)->create();
 
         //Order::factory()->count(20)->create();
 
@@ -38,8 +38,12 @@ class DatabaseSeeder extends Seeder
         Attributes::create(['group_id'=>1,'attribute_name'=>'XL']);
         Attributes::create(['group_id'=>1,'attribute_name'=>'XXL']);
 
-        HasAttribute::factory()->count(40)->create();
+        Attributes::create(['group_id'=>2,'attribute_name'=>'RED']);
+        Attributes::create(['group_id'=>2,'attribute_name'=>'GREEN']);
+        Attributes::create(['group_id'=>2,'attribute_name'=>'BLUE']);
 
-        ProductFeedback::factory()->count(200)->create();
+        //HasAttribute::factory()->count(40)->create();
+
+        //ProductFeedback::factory()->count(200)->create();
     }
 }
