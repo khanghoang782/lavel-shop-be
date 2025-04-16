@@ -59,11 +59,20 @@ Route::controller(ProductController::class)->group(function () {
 
     //Attribute
     Route::get('/attribute/size','getSizeAttribute');
+
+    //Attributes group
+    Route::get('/attribute/groups','getAttributeGroups');
+    Route::get('/attribute/{id}','getAttributeList');
+
+    //Feedback
+    Route::get('/product/{id}/feedback','getProductFeedback');
 });
 Route::controller(OrderController::class)->group(function () {
    Route::post('/order', 'makeOrder');
 
    Route::get('/order/{id}', 'getOrderDetails');
+
+   Route::post('/product/{id}/feedback','createProductFeedback');
 });
 Route::controller(GoogleAuthController::class)->group(function () {
     Route::get('/auth/google/url','getGoogleUrl');

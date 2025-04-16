@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Catalog;
 use App\Models\Product;
+use App\Models\ProductFeedback;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -113,5 +114,29 @@ class ProductController extends Controller
         return response()->json($data,200);
     }
 
+    public function getAttributeGroups(){
+        $data=DB::table("attribute_groups")
+            ->select('*')
+            ->get();
+        return response()->json($data,200);
+    }
+    public function getAttributeList(Request $request){
+        $group_id = $request->route()->parameter('id');
+        $data=DB::table("attributes")
+            ->select('*')
+            ->where('group_id', '=', $group_id)
+            ->get();
+        return response()->json($data,200);
+    }
+    public function getProductFeedback(Request $request){
+        $product_id = $request->route()->parameter('id');
+        $data=DB::table('product_feedback')
+            ->join('users','users.id','=','product_feedback.created_by')
+            ->where('product_feedback.of_product',$product_id)
+            ->select('product_feedback.id','users.name','product_feedback.feedback','product_feedback.created_at','product_feedback.rating')
+            ->orderBy('created_at','desc')
+            ->get();
 
+        return response()->json($data,200);
+    }
 }

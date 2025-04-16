@@ -28,6 +28,7 @@ class ProductRequest extends FormRequest
             'stock' => 'integer',
             'catalog_id' => 'integer',
             'catalog_name' => 'string',
+            'attributes' => 'string',
         ];
     }
 }

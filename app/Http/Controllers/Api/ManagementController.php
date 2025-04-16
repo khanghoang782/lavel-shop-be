@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
-use App\Models\Order;
+use App\Models\HasAttribute;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\User;
@@ -34,6 +34,13 @@ class ManagementController extends Controller
             'stock'=>$request->input('stock'),
             'catalog_id'=>$request->input('catalog_id'),
         ]);
+        $attribute=explode(",",$request->input('attribute'));
+        foreach($attribute as $a){
+            $attribute=(new HasAttribute)->create([
+               'product_id'=>$product->id,
+               'attribute_id'=>$a
+            ]);
+        }
         return ResponseHelper::success(message: "Product created", data:$product);
     }
     public function deleteProductById(Request $request){
